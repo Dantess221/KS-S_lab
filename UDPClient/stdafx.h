@@ -1,6 +1,7 @@
 #pragma once
-
-#include <SDKDDKVer.h>
-
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdio>
 #include <tchar.h>
+#include <WinSock2.h>
+#pragma comment(lib, "ws2_32.lib")

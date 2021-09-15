@@ -1,11 +1,7 @@
 ﻿// UDPClient.cpp
 //
 
-#include <cstdio>
-#include <cstdlib>
-#include <WinSock2.h>
 #include "stdafx.h"
-#pragma comment(lib, "ws2_32.lib")
 
 
 int main()
