@@ -10,34 +10,29 @@
 
 int main()
 {
-
-	SOCKET CliSocket = INVALID_SOCKET;
+	constexpr auto cli_socket = INVALID_SOCKET;
 	WSADATA wsaData;
-	int ERRORCODE;
 
-	//初始化Winsock
-	ERRORCODE = WSAStartup(MAKEWORD(2, 2), &wsaData); //test MAKEWORD(2, 1)都行？
-	if (ERRORCODE != 0)
+	const auto errorcode = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (errorcode != 0)
 	{
-		printf("WSAStartup failed: %d\n", ERRORCODE);
+		printf("WSAStartup failed: %d\n", errorcode);
 		WSACleanup();
 		return 1;
 	}
 
-	//记录IP和端口
-	int sockfd;// fd means file descriptor
-	struct sockaddr_in serveraddr, cliaddr;
-	const char* SERV_ADDR = "192.168.1.101";
-	u_short SERV_PORT = 12345;
+	struct sockaddr_in serveraddr;  
+	constexpr auto serv_addr = "192.168.1.101";
+	constexpr u_short serv_port = 12345;
 
 
-	sockfd = socket(AF_INET, SOCK_DGRAM, 0);// fd means file descriptor
+	const int sockfd = socket(2, 2, 0);
 
-	//ip地址和端口记录在 sockaddr_in 中
+	
 	memset(&serveraddr, 0, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_addr.s_addr = inet_addr(SERV_ADDR);
-	serveraddr.sin_port = htons(SERV_PORT);
+	serveraddr.sin_addr.s_addr = inet_addr(serv_addr);
+	serveraddr.sin_port = htons(serv_port);
 
 	int SERVAddrSize = sizeof(serveraddr);
 
@@ -47,18 +42,16 @@ int main()
 	char RecvBuf[10020] = "\0";
 	//system("pause"); //test
 
-	int iResult;
-
-
-	//一收一发
-	while (1)
+	int i_result = 0;
+	
+	while (true)
 	{
-		scanf("%s", SendBuf);
+		scanf_s("%s", SendBuf);
 		if (strcmp(SendBuf, "bye") == 0)
 		{
 			printf("bye!");
 			Sleep(1000);
-			if (iResult == SOCKET_ERROR)
+			if (i_result == SOCKET_ERROR)
 			{
 				printf("closesocket failed with error %d\n", WSAGetLastError());
 				return 1;
@@ -67,8 +60,8 @@ int main()
 		}
 
 		printf("sending...\n");
-		iResult = sendto(sockfd, SendBuf, sizeof(SendBuf), 0, (sockaddr*)&serveraddr, sizeof(serveraddr));
-		if (iResult == SOCKET_ERROR)
+		i_result = sendto(sockfd, SendBuf, sizeof(SendBuf), 0, reinterpret_cast<sockaddr*>(&serveraddr), sizeof(serveraddr));
+		if (i_result == SOCKET_ERROR)
 		{
 			printf("recvfrom failed with error %d\n", WSAGetLastError());
 			WSACleanup();
@@ -77,8 +70,8 @@ int main()
 		else
 		{
 			Sleep(10);
-			iResult = recvfrom(sockfd, RecvBuf, sizeof(RecvBuf), 0, (sockaddr*)&serveraddr, &SERVAddrSize);
-			if (iResult == SOCKET_ERROR)
+			i_result = recvfrom(sockfd, RecvBuf, sizeof(RecvBuf), 0, reinterpret_cast<sockaddr*>(&serveraddr), &SERVAddrSize);
+			if (i_result == SOCKET_ERROR)
 			{
 				printf("recvfrom failed with error %d\n", WSAGetLastError());
 				WSACleanup();
@@ -88,15 +81,15 @@ int main()
 		}
 	}
 
-	iResult = closesocket(CliSocket);
-	if (iResult == SOCKET_ERROR)
+	i_result = closesocket(cli_socket);
+	if (i_result == SOCKET_ERROR)
 	{
 		printf("closesocket failed with error %d\n", WSAGetLastError());
 		return 1;
 	}
 	WSACleanup();
 
-	system("pause");
+	system("pause");  // NOLINT(concurrency-mt-unsafe)
 	return 0;
 }
 
