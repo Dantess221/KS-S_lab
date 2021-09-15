@@ -1,1 +1,11 @@
-/.vs/KSCS_Lab/v16
+/.vs
+/x64
+/Debug
+/UDPClient/Debug
+/UDPClient/x64
+/bin
+/obj
+/Bitmap Extensions/bin
+/Bitmap Extensions/obj
+/UDPServer/bin
+/UDPServer/obj
