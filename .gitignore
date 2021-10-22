@@ -1,12 +1,11 @@
 .vs
 x64
 Debug
-UDPClient/Debug
-UDPClient/x64
+UDPServerService/bin
+UDPServerService/obj
 bin
 obj
 Bitmap Extensions/bin
 Bitmap Extensions/obj
-UDPServer/bin
-/UDPServer/obj
-.vs
+UDPServerUI/bin
+UDPServerUI/obj

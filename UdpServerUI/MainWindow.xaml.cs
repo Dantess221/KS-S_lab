@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UDPServer
+namespace UdpServerUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
